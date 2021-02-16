@@ -1,1 +1,88 @@
-<h1>Hello</h1>
+<html>
+<style>
+
+body {
+    background-color: rgb(216, 230, 236);
+}
+
+h1 {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.outer {
+    /*Dimensions*/
+    width: 80%;
+    max-width: 700px;
+    
+    /*Display*/
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: auto;
+    
+}
+
+.slot {
+    /*Dimensions*/
+    width: 17%;
+    margin-top: 2.5%;
+
+    /*Borders*/
+    border-radius: 10px;
+
+    transition: 0.3s;
+}
+
+.slot:hover {
+    cursor: pointer;
+}
+
+.selected {
+    filter: brightness(20%);
+}
+
+</style>
+
+<body>
+    <h1>Guess who, asshole</h1>
+    <div class="outer">
+        <img id="img1"; onclick="fadeOut('img1')" ; src="images/img1.png"; class="slot";>
+        <img id="img2"; onclick="fadeOut('img2')" ; src="images/img2.png"; class="slot";>
+        <img id="img3"; onclick="fadeOut('img3')" ; src="images/img3.png"; class="slot";>
+        <img id="img4"; onclick="fadeOut('img4')" ; src="images/img4.png"; class="slot";>
+        <img id="img5"; onclick="fadeOut('img5')" ; src="images/img5.png"; class="slot";>
+        <img id="img6"; onclick="fadeOut('img6')" ; src="images/img6.png"; class="slot";>
+        <img id="img7"; onclick="fadeOut('img7')" ; src="images/img7.png"; class="slot";>
+        <img id="img8"; onclick="fadeOut('img8')" ; src="images/img8.png"; class="slot";>
+        <img id="img9"; onclick="fadeOut('img9')" ; src="images/img9.png"; class="slot";>
+        <img id="img10"; onclick="fadeOut('img10')" ; src="images/img10.png"; class="slot";>
+        <img id="img11"; onclick="fadeOut('img11')" ; src="images/img11.png"; class="slot";>
+        <img id="img12"; onclick="fadeOut('img12')" ; src="images/img12.png"; class="slot";>
+        <img id="img13"; onclick="fadeOut('img13')" ; src="images/img13.png"; class="slot";>
+        <img id="img14"; onclick="fadeOut('img14')" ; src="images/img14.png"; class="slot";>
+        <img id="img15"; onclick="fadeOut('img15')" ; src="images/img15.png"; class="slot";>
+        <img id="img16"; onclick="fadeOut('img16')" ; src="images/img16.png"; class="slot";>
+        <img id="img17"; onclick="fadeOut('img17')" ; src="images/img17.png"; class="slot";>
+        <img id="img18"; onclick="fadeOut('img18')" ; src="images/img18.png"; class="slot";>
+        <img id="img19"; onclick="fadeOut('img19')" ; src="images/img19.png"; class="slot";>
+        <img id="img20"; onclick="fadeOut('img20')" ; src="images/img20.png"; class="slot";>
+        <img id="img21"; onclick="fadeOut('img21')" ; src="images/img21.png"; class="slot";>
+        <img id="img22"; onclick="fadeOut('img22')" ; src="images/img22.png"; class="slot";>
+        <img id="img23"; onclick="fadeOut('img23')" ; src="images/img23.png"; class="slot";>
+        <img id="img24"; onclick="fadeOut('img24')" ; src="images/img24.png"; class="slot";>
+        <img id="img25"; onclick="fadeOut('img25')" ; src="images/img25.png"; class="slot";>
+    </div>
+</body>
+
+<script>
+    function fadeOut(indx) {
+        const image = document.getElementById(indx);
+        if (image.classList.contains('selected')) {
+            image.classList.remove('selected');
+        } else {
+            image.classList.add('selected');
+        }
+    }
+</script>
+</html>
