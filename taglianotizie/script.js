@@ -7,6 +7,7 @@
   var display = document.getElementById('display');
   var copyBtn = document.getElementById('copy-btn');
   var backspaceBtn = document.getElementById('backspace-btn');
+  var cancBtn = document.getElementById('canc-btn');
   var enterBtn = document.getElementById('enter-btn');
   var toast = document.getElementById('toast');
   var mobileKeyboard = document.getElementById('mobile-keyboard');
@@ -14,6 +15,7 @@
   var history = [];
   var toastTimer = null;
   var mobileBackspaceBtn = null;
+  var mobileCancBtn = null;
   var mobileEnterBtn = null;
 
   function resetState(text) {
@@ -68,8 +70,10 @@
     var canCutRest = state.remainder.length > 0;
 
     backspaceBtn.disabled = !canUndo;
+    cancBtn.disabled = !canCutRest;
     enterBtn.disabled = !canCutRest;
     if (mobileBackspaceBtn) mobileBackspaceBtn.disabled = !canUndo;
+    if (mobileCancBtn) mobileCancBtn.disabled = !canCutRest;
     if (mobileEnterBtn) mobileEnterBtn.disabled = !canCutRest;
   }
 
@@ -125,6 +129,14 @@
     var state = current();
     if (state.remainder.length === 0) return;
     history.push({ prefix: state.prefix, remainder: '' });
+    render();
+  }
+
+  // Elimina il carattere subito dopo il cursore senza accettarlo nel prefisso.
+  function deleteNext() {
+    var state = current();
+    if (state.remainder.length === 0) return;
+    history.push({ prefix: state.prefix, remainder: state.remainder.slice(1) });
     render();
   }
 
@@ -207,6 +219,9 @@
     if (e.key === 'Backspace') {
       e.preventDefault();
       undoCut();
+    } else if (e.key === 'Delete') {
+      e.preventDefault();
+      deleteNext();
     } else if (e.key === 'Enter') {
       e.preventDefault();
       cutRest();
@@ -219,6 +234,10 @@
   copyBtn.addEventListener('click', copyResult);
   backspaceBtn.addEventListener('click', function () {
     undoCut();
+    display.focus();
+  });
+  cancBtn.addEventListener('click', function () {
+    deleteNext();
     display.focus();
   });
   enterBtn.addEventListener('click', function () {
@@ -234,7 +253,9 @@
     ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
   ];
 
-  ROWS.forEach(function (row) {
+  // Come sulla tastiera dell'iPhone: ⌫ chiude la riga ZXCVBNM, mentre la riga
+  // inferiore ha uno spazio grande al centro e ⏎ come tasto d'azione finale.
+  ROWS.forEach(function (row, rowIndex) {
     var rowEl = document.createElement('div');
     rowEl.className = 'kb-row';
     row.forEach(function (letter) {
@@ -247,18 +268,29 @@
       });
       rowEl.appendChild(btn);
     });
+
+    if (rowIndex === ROWS.length - 1) {
+      mobileBackspaceBtn = document.createElement('button');
+      mobileBackspaceBtn.type = 'button';
+      mobileBackspaceBtn.className = 'kb-key kb-wide';
+      mobileBackspaceBtn.textContent = '⌫';
+      mobileBackspaceBtn.setAttribute('aria-label', 'Annulla l\'ultimo taglio');
+      mobileBackspaceBtn.addEventListener('click', undoCut);
+      rowEl.appendChild(mobileBackspaceBtn);
+    }
+
     mobileKeyboard.appendChild(rowEl);
   });
 
   var bottomRow = document.createElement('div');
   bottomRow.className = 'kb-row';
 
-  mobileBackspaceBtn = document.createElement('button');
-  mobileBackspaceBtn.type = 'button';
-  mobileBackspaceBtn.className = 'kb-key kb-wide';
-  mobileBackspaceBtn.textContent = '⌫';
-  mobileBackspaceBtn.setAttribute('aria-label', 'Annulla l\'ultimo taglio');
-  mobileBackspaceBtn.addEventListener('click', undoCut);
+  mobileCancBtn = document.createElement('button');
+  mobileCancBtn.type = 'button';
+  mobileCancBtn.className = 'kb-key kb-wide';
+  mobileCancBtn.textContent = '⌦';
+  mobileCancBtn.setAttribute('aria-label', 'Elimina il carattere dopo il cursore');
+  mobileCancBtn.addEventListener('click', deleteNext);
 
   var spaceBtn = document.createElement('button');
   spaceBtn.type = 'button';
@@ -275,7 +307,7 @@
   mobileEnterBtn.setAttribute('aria-label', 'Taglia il resto');
   mobileEnterBtn.addEventListener('click', cutRest);
 
-  bottomRow.appendChild(mobileBackspaceBtn);
+  bottomRow.appendChild(mobileCancBtn);
   bottomRow.appendChild(spaceBtn);
   bottomRow.appendChild(mobileEnterBtn);
   mobileKeyboard.appendChild(bottomRow);
