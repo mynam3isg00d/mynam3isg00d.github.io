@@ -151,6 +151,15 @@ body {
   color: var(--ink);
 }
 
+.char {
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.char:hover {
+  background: var(--btn-bg-hover);
+}
+
 .cursor {
   display: inline-block;
   width: 0;

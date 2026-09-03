@@ -25,20 +25,40 @@
     return history[history.length - 1];
   }
 
+  function appendChars(container, text, onCharClick) {
+    for (var i = 0; i < text.length; i++) {
+      var charSpan = document.createElement('span');
+      charSpan.className = 'char';
+      charSpan.textContent = text[i];
+      charSpan.addEventListener('click', makeCharClickHandler(onCharClick, i));
+      container.appendChild(charSpan);
+    }
+  }
+
+  function makeCharClickHandler(onCharClick, index) {
+    return function (e) {
+      e.stopPropagation();
+      onCharClick(index);
+      display.focus();
+    };
+  }
+
   function render() {
     var state = current();
     display.textContent = '';
 
     var prefixSpan = document.createElement('span');
     prefixSpan.className = 'seg-prefix';
-    prefixSpan.textContent = state.prefix;
+    appendChars(prefixSpan, state.prefix, function (idx) {
+      rewindTo(idx + 1);
+    });
 
     var cursorSpan = document.createElement('span');
     cursorSpan.className = 'cursor';
 
     var remainderSpan = document.createElement('span');
     remainderSpan.className = 'seg-remainder';
-    remainderSpan.textContent = state.remainder;
+    appendChars(remainderSpan, state.remainder, moveCursorTo);
 
     display.appendChild(prefixSpan);
     display.appendChild(cursorSpan);
@@ -66,6 +86,39 @@
       remainder: state.remainder.slice(idx + 1)
     });
     render();
+  }
+
+  // Clicca su una lettera del resto per accettare tutto il testo fino a lì
+  // (compresa la lettera cliccata), utile per saltare simboli assenti dalla
+  // tastiera mobile (es. ":"). A differenza di cut(), non scarta nulla.
+  // Ogni carattere accettato genera una voce di history separata, così
+  // "Annulla" torna sempre indietro di un carattere alla volta.
+  function moveCursorTo(idx) {
+    var state = current();
+    if (idx < 0 || idx >= state.remainder.length) return;
+    for (var i = 0; i <= idx; i++) {
+      var s = current();
+      history.push({
+        prefix: s.prefix + s.remainder[0],
+        remainder: s.remainder.slice(1)
+      });
+    }
+    render();
+  }
+
+  // Torna allo stato più recente in cui il prefisso aveva esattamente
+  // prefixLen caratteri. Non si può assumere history[k].prefix.length === k:
+  // cutRest() aggiunge una voce di history senza far crescere il prefisso.
+  function rewindTo(prefixLen) {
+    for (var k = history.length - 1; k >= 0; k--) {
+      if (history[k].prefix.length === prefixLen) {
+        if (k < history.length - 1) {
+          history.length = k + 1;
+          render();
+        }
+        return;
+      }
+    }
   }
 
   function cutRest() {
