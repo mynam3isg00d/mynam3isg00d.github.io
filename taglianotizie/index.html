@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Taglia-notizie</title>
+<meta name="description" content="Cut a sentence down, letter by letter, into a brand new one.">
+<meta name="theme-color" content="#f6f1e7">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9C%82%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="app-header">
+    <h1>✂️ Taglia&#8209;notizie</h1>
+    <p class="tagline">Cut a sentence into another one, letter by letter.</p>
+  </header>
+
+  <section class="panel">
+    <label for="original-input">Original sentence</label>
+    <textarea id="original-input" rows="3" spellcheck="false">Old McDonald had a farm</textarea>
+    <div class="panel-actions">
+      <button id="load-btn" class="btn btn-primary" type="button">Load sentence</button>
+      <button id="reset-btn" class="btn" type="button">Reset cuts</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="display-label-row">
+      <label>Result</label>
+      <span class="hint hint-desktop">Click below, then type a letter to cut</span>
+      <span class="hint hint-mobile">Tap a letter on the keyboard below to cut</span>
+    </div>
+    <div id="display" class="display" tabindex="0" aria-label="Cutting area. Click and type a letter to cut the sentence to its first occurrence."></div>
+    <div class="panel-actions">
+      <button id="copy-btn" class="btn btn-primary" type="button">📋 Copy result</button>
+      <button id="backspace-btn" class="btn" type="button" aria-label="Undo last cut">⌫ Undo</button>
+      <button id="enter-btn" class="btn" type="button" aria-label="Cut the remainder">⏎ Cut rest</button>
+    </div>
+    <p id="toast" class="toast" role="status" hidden></p>
+  </section>
+
+</div>
+
+<div id="mobile-keyboard" class="mobile-keyboard" aria-hidden="true"></div>
+
+<script src="script.js" defer></script>
+</body>
+</html>
