@@ -239,7 +239,7 @@ body {
   font-weight: 600;
 }
 
-/* Custom on-screen keyboard: mobile only */
+/* Tastiera su schermo personalizzata: solo mobile */
 .mobile-keyboard {
   display: none;
 }

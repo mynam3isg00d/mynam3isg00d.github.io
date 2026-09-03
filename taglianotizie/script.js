@@ -106,7 +106,7 @@
     var text = state.prefix + state.remainder;
 
     function done(ok) {
-      showToast(ok ? 'Copied to clipboard!' : 'Could not copy — select the text manually.');
+      showToast(ok ? 'Copiato negli appunti!' : 'Impossibile copiare — seleziona il testo manualmente.');
     }
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -137,7 +137,7 @@
     cb(ok);
   }
 
-  // --- controls ---
+  // --- controlli ---
 
   loadBtn.addEventListener('click', function () {
     resetState(originalInput.value);
@@ -173,7 +173,7 @@
     display.focus();
   });
 
-  // --- custom mobile keyboard (letters only shown on small screens via CSS) ---
+  // --- tastiera mobile personalizzata (le lettere si vedono solo su schermi piccoli tramite CSS) ---
 
   var ROWS = [
     ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
@@ -204,13 +204,13 @@
   mobileBackspaceBtn.type = 'button';
   mobileBackspaceBtn.className = 'kb-key kb-wide';
   mobileBackspaceBtn.textContent = '⌫';
-  mobileBackspaceBtn.setAttribute('aria-label', 'Undo last cut');
+  mobileBackspaceBtn.setAttribute('aria-label', 'Annulla l\'ultimo taglio');
   mobileBackspaceBtn.addEventListener('click', undoCut);
 
   var spaceBtn = document.createElement('button');
   spaceBtn.type = 'button';
   spaceBtn.className = 'kb-key kb-space';
-  spaceBtn.textContent = 'space';
+  spaceBtn.textContent = 'spazio';
   spaceBtn.addEventListener('click', function () {
     cut(' ');
   });
@@ -219,7 +219,7 @@
   mobileEnterBtn.type = 'button';
   mobileEnterBtn.className = 'kb-key kb-wide';
   mobileEnterBtn.textContent = '⏎';
-  mobileEnterBtn.setAttribute('aria-label', 'Cut the remainder');
+  mobileEnterBtn.setAttribute('aria-label', 'Taglia il resto');
   mobileEnterBtn.addEventListener('click', cutRest);
 
   bottomRow.appendChild(mobileBackspaceBtn);
